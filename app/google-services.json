@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "933176818335",
+    "firebase_url": "https://hanut-esteban.firebaseio.com",
+    "project_id": "hanut-esteban",
+    "storage_bucket": "hanut-esteban.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933176818335:android:724c9fd2ea84ab4daf40aa",
+        "android_client_info": {
+          "package_name": "com.example.hanut"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "933176818335-c1k6h3kdrbl6390rf06e93t4qf43rukp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGf6JvPRir2VB9uInvqbrgWOqxGIOyr8E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "933176818335-c1k6h3kdrbl6390rf06e93t4qf43rukp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

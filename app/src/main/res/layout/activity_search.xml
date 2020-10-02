@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="ffffff"
     tools:context=".SearchActivity">
 
     <LinearLayout
@@ -29,12 +28,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-    </LinearLayout>
 
     <Button
         android:id="@+id/searchBtn"
@@ -44,7 +37,7 @@
         android:backgroundTint="#F44336"
         android:onClick="search"
         android:shadowColor="#F44336"
-        android:text="Button"
+        android:text="Buscar"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#FFFFFF"
         android:textColorHint="#F44336"

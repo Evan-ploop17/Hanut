@@ -10,16 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <activity android:name=".ProductActivity"
-            android:theme="@style/Theme.AppCompat.Light" />
-
+        <activity android:name=".ProductActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".AuthActivity" />
         <activity
             android:name=".SplashScreenActivity"
             android:parentActivityName=".AuthActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

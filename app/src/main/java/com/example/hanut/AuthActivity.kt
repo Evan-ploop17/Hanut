@@ -2,9 +2,11 @@ package com.example.hanut
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.auth_activity.*
@@ -18,6 +20,11 @@ class AuthActivity : AppCompatActivity() {
         val bundle = Bundle()
         bundle.putString("Mensaje", "Integracin de firebase completa")
         analytics.logEvent("InitScreen", bundle)
+
+        val  window = this.window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
 
         setUp()
     }

@@ -6,6 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".ProductActivity">
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#E75330"
+            app:menu="@menu/top_app_bar"
+            app:title="Ropa"
+            app:titleTextColor="#FFFFFF" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <TextView
         android:id="@+id/nameText"
         android:layout_width="wrap_content"

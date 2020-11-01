@@ -21,13 +21,11 @@ class ProductActivity : AppCompatActivity() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
 
-
-
         //supportActionBar.setBackgroundDrawable()
-
         nameText.text = product.name
         descriptionText.text = product.description
         priceText.text = "$ ${product.price}"
+
         val imagen = product.image
         imageView.setImageResource(imagen)
 
@@ -35,6 +33,7 @@ class ProductActivity : AppCompatActivity() {
             // Handle navigation icon press
             Toast.makeText(this, "Un mensaje jeje", Toast.LENGTH_LONG).show()
         }
+
 
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
@@ -47,6 +46,15 @@ class ProductActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
+
+                R.id.Porfile -> {
+                    // Handle search icon press
+
+                    val intent = Intent(this, Profile::class.java)
+                    startActivity(intent)
+                    true
+                }
+
                 else -> false
             }
         }

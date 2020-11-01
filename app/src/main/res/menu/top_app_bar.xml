@@ -4,10 +4,16 @@
 
     <item
         android:id="@+id/search"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/search"
         android:title="Buscar"
         android:iconTint="@color/white"
         android:contentDescription=""
         app:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/Porfile"
+        android:icon="@drawable/account"
+        android:title="Cuenta"
+        android:iconTint="@color/white"
+        app:showAsAction="ifRoom"
+        />
 </menu>

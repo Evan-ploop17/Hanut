@@ -3,4 +3,8 @@
     <string name="Descripcion">Descripcion</string>
     <string name="Usuario">Usuario</string>
     <string name="NuevaPublicacion">Nueva Publicacion</string>
+    <string name="datos">Datos de envio</string>
+    <string name="enviar">Enviar</string>
+    <string name="ciudad">Ciudad</string>
+    <string name="cantidad">Cantidad</string>
 </resources>

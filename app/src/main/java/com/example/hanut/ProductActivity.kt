@@ -59,6 +59,11 @@ class ProductActivity : AppCompatActivity() {
             }
         }
 
+        buyBtn.setOnClickListener{
+            val confirmPurchase = Intent(this, ConfirmPurchase::class.java)
+            startActivity(confirmPurchase)
+        }
+
     }
 
 

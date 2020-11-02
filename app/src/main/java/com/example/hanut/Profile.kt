@@ -1,13 +1,19 @@
 package com.example.hanut
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_porfile.*
 
 class Profile : AppCompatActivity() {
+    @SuppressLint("IntentReset")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_porfile)
@@ -24,5 +30,20 @@ class Profile : AppCompatActivity() {
         val adapter = ProductAdapter(this, listProduct)
         listHome.adapter = adapter
 
+        addPost.setOnClickListener{
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.type = "image/"
+            startActivityForResult(intent, 10)
+        }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK){
+            val path = data?.data
+            image.setImageURI(path)
+
+        }
+    }
+
 }

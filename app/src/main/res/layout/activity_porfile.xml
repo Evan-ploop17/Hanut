@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imageBackgroud"
-        android:layout_width="match_parent"
-        android:layout_height="337dp"
+        android:layout_width="429dp"
+        android:layout_height="277dp"
         android:foregroundGravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,8 +19,9 @@
         app:srcCompat="@drawable/porfile_background" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="330dp"
+        android:id="@+id/constraintLayout"
+        android:layout_width="390dp"
+        android:layout_height="278dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageBackgroud"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +57,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/addPost"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_marginEnd="32dp"
@@ -66,7 +67,7 @@
             app:layout_constraintHorizontal_bias="0.969"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.862"
+            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_baseline_add_circle_outline_24" />
 
         <TextView
@@ -77,19 +78,29 @@
             android:text="@string/NuevaPublicacion"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/imageView3"
-            app:layout_constraintEnd_toEndOf="@+id/imageView3"
+            app:layout_constraintBottom_toTopOf="@+id/addPost"
+            app:layout_constraintEnd_toEndOf="@+id/addPost"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            app:layout_constraintStart_toStartOf="@+id/addPost"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageBackgroud"
+        app:srcCompat="@drawable/ropa" />
 
     <ListView
         android:id="@+id/listHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/imageBackgroud"
+        app:layout_constraintTop_toBottomOf="@+id/image"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="1dp" />
+        tools:layout_editor_absoluteX="-8dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

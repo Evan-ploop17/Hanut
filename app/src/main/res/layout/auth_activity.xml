@@ -8,6 +8,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="30dp"
@@ -66,7 +67,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="20dp"
                 android:background="#FFFFFF"
-                android:text="Sing up"
+                android:text="@string/Registrarse"
                 android:textColor="#E75330"
                 android:textColorLink="#FFFFFF" />
 
@@ -78,10 +79,24 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="20dp"
                 android:background="#FFFFFF"
-                android:text="Login"
+                android:text="@string/ingresar"
                 android:textColor="#E75330" />
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Inicia_sesion"
+        android:textColor="#E75330"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.508" />
 </androidx.constraintlayout.widget.ConstraintLayout>

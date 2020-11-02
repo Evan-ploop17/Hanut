@@ -7,4 +7,7 @@
     <string name="enviar">Enviar</string>
     <string name="ciudad">Ciudad</string>
     <string name="cantidad">Cantidad</string>
+    <string name="Inicia_sesion">Inicia sesión</string>
+    <string name="ingresar">Entrar</string>
+    <string name="Registrarse">Registro</string>
 </resources>

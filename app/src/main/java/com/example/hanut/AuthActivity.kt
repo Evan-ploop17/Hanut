@@ -30,7 +30,7 @@ class AuthActivity : AppCompatActivity() {
     }
 
      fun setUp(){
-        title = "Autenticacion"
+        title = "Autenticación"
         signUpBtn.setOnClickListener{
             if (emailText.text.isNotEmpty() && passwordText.text.isNotEmpty()){
                 FirebaseAuth.getInstance()
@@ -72,6 +72,7 @@ class AuthActivity : AppCompatActivity() {
             putExtra("email", email)
         }
         startActivity(homeIntent)
+         finish()
     }
 
 

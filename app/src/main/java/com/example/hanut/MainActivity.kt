@@ -28,7 +28,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        topAppBar.setOnMenuItemClickListener { menuItem ->
+        val actionToolBar: com.example.hanut.ActionBarHanut = com.example.hanut.ActionBarHanut()
+        actionToolBar.callActionBar(topAppBar, this)
+
+        /*topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.search -> {
                     // Handle search icon press
@@ -48,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
                 else -> false
             }
-        }
+        }*/
 
 
     }

@@ -28,32 +28,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Lllamamos la funcionalidad del action bar
         val actionToolBar: com.example.hanut.ActionBarHanut = com.example.hanut.ActionBarHanut()
         actionToolBar.callActionBar(topAppBar, this)
-
-        /*topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.search -> {
-                    // Handle search icon press
-
-                    val intent = Intent(this, SearchActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-
-                R.id.Porfile -> {
-                    // Handle search icon press
-
-                    val intent = Intent(this, Profile::class.java)
-                    startActivity(intent)
-                    true
-                }
-
-                else -> false
-            }
-        }*/
-
-
     }
 
 

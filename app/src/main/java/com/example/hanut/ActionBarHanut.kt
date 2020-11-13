@@ -15,7 +15,6 @@ class ActionBarHanut {
             when (menuItem.itemId) {
                 R.id.search -> {
                     // Handle search icon press
-
                     val intent = Intent(context, SearchActivity::class.java)
                     context.startActivity(intent)
                     //startActivity(intent)
@@ -24,13 +23,11 @@ class ActionBarHanut {
 
                 R.id.Porfile -> {
                     // Handle search icon press
-
                     val intent = Intent(context, Profile::class.java)
                     context.startActivity(intent)
                     //startActivity(intent)
                     true
                 }
-
                 else -> false
             }
         }

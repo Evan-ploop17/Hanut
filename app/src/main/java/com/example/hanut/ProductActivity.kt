@@ -35,34 +35,10 @@ class ProductActivity : AppCompatActivity() {
             Toast.makeText(this, "Un mensaje jeje", Toast.LENGTH_LONG).show()
         }
 
-
+        // Llamamos funcionalidad del ActionBar
         val actionToolBar: com.example.hanut.ActionBarHanut = com.example.hanut.ActionBarHanut()
         actionToolBar.callActionBar(topAppBar, this)
 
-
-//        topAppBar.setOnMenuItemClickListener { menuItem ->
-//            when (menuItem.itemId) {
-//                R.id.search -> {
-//                    // Handle search icon press
-//
-//                    val intent = Intent(this, SearchActivity::class.java).apply {
-//                        putExtra("search", "" )
-//                    }
-//                    startActivity(intent)
-//                    true
-//                }
-//
-//                R.id.Porfile -> {
-//                    // Handle search icon press
-//
-//                    val intent = Intent(this, Profile::class.java)
-//                    startActivity(intent)
-//                    true
-//                }
-//
-//                else -> false
-//            }
-//        }
 
         buyBtn.setOnClickListener{
             val confirmPurchase = Intent(this, ConfirmPurchase::class.java)

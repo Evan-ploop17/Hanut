@@ -6,11 +6,11 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import org.jetbrains.annotations.NotNull
 
-@Entity(tableName = "Product",
-        // necesita saber a que entidad pertenece, como se llama en esa entidad y como se llamará en esta
-        foreignKeys = [
-        ForeignKey(entity = User::class, parentColumns = ["idUser"], childColumns = ["idUser "])
-        ]
+@Entity(
+    tableName = "Product",
+    foreignKeys = [
+        ForeignKey(entity = KindProduct::class, parentColumns = ["idKindProduct"], childColumns = ["kindProduct"])
+    ]
     )
 data class Product(
 
@@ -39,7 +39,7 @@ data class Product(
     val measurements: String,
 
     // Foreign Key
-    @ColumnInfo(name = "idUser")
+    @ColumnInfo(name = "kindProduct")
     @NotNull
-    val idUser: String
+    val kindProduct: String
 )

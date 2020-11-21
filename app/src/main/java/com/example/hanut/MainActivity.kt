@@ -32,8 +32,5 @@ class MainActivity : AppCompatActivity() {
         val actionToolBar: com.example.hanut.ActionBarHanut = com.example.hanut.ActionBarHanut()
         actionToolBar.callActionBar(topAppBar, this)
     }
-
-
-
 }
 

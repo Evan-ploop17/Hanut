@@ -1,4 +1,4 @@
-package com.example.hanut
+package com.example.hanut.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
+import com.example.hanut.R
 
 class SplashScreenActivity : AppCompatActivity() {
 

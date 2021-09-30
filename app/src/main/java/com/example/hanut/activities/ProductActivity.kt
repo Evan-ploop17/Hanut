@@ -1,4 +1,4 @@
-package com.example.hanut
+package com.example.hanut.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.hanut.R
 import kotlinx.android.synthetic.main.activity_product.*
 import kotlinx.android.synthetic.main.activity_product.topAppBar
 
@@ -36,7 +36,7 @@ class ProductActivity : AppCompatActivity() {
         }
 
         // Llamamos funcionalidad del ActionBar
-        val actionToolBar: com.example.hanut.ActionBarHanut = com.example.hanut.ActionBarHanut()
+        val actionToolBar: ActionBarHanut = ActionBarHanut()
         actionToolBar.callActionBar(topAppBar, this)
 
 

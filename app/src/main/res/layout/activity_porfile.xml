@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:backgroundTint="#FFFFFF"
     android:forceHasOverlappingRendering="false"
-    tools:context=".Profile">
+    tools:context=".activities.Profile">
 
     <ImageView
         android:id="@+id/imageBackgroud"

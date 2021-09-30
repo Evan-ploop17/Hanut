@@ -20,15 +20,18 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".ConfirmPurchase"></activity>
-        <activity android:name=".Profile" />
-        <activity android:name=".ProductActivity" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".AuthActivity" />
         <activity
-            android:name=".SplashScreenActivity"
-            android:parentActivityName=".AuthActivity"
+            android:name=".activities.PostActivity"
+            android:exported="true" />
+        <activity android:name=".activities.ConfirmPurchase" />
+        <activity android:name=".activities.Profile" />
+        <activity android:name=".activities.ProductActivity" />
+        <activity android:name=".activities.SearchActivity" />
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.AuthActivity" />
+        <activity
+            android:name=".activities.SplashScreenActivity"
+            android:parentActivityName=".activities.AuthActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

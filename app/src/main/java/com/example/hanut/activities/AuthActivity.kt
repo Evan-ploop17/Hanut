@@ -1,12 +1,12 @@
-package com.example.hanut
+package com.example.hanut.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.hanut.R
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.auth_activity.*

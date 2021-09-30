@@ -1,11 +1,9 @@
-package com.example.hanut
+package com.example.hanut.activities
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
+import com.example.hanut.R
 import com.google.android.material.appbar.MaterialToolbar
-import kotlinx.android.synthetic.main.activity_main.*
 
 class ActionBarHanut {
 

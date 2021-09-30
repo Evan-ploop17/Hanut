@@ -1,4 +1,4 @@
-package com.example.hanut
+package com.example.hanut.activities
 
 import java.io.Serializable
 

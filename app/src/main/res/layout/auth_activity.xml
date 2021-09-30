@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".AuthActivity">
+    tools:context=".activities.AuthActivity">
 
 
     <LinearLayout
@@ -69,7 +69,8 @@
                 android:background="#FFFFFF"
                 android:text="@string/Registrarse"
                 android:textColor="#E75330"
-                android:textColorLink="#FFFFFF" />
+                android:textColorLink="#FFFFFF"
+                />
 
             <Button
                 android:id="@+id/logInBtn"

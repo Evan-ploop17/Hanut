@@ -1,15 +1,14 @@
-package com.example.hanut
+package com.example.hanut.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
-import com.squareup.picasso.Picasso
+import com.example.hanut.R
 import kotlinx.android.synthetic.main.activity_porfile.*
 
 class Profile : AppCompatActivity() {
@@ -23,12 +22,6 @@ class Profile : AppCompatActivity() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
 
-        val product = Product(R.drawable.ropa, "Ropa", 100.0, "Algodon suave" )
-        val product1 = Product(R.drawable.hanut, "Hanut", 100.0, "Algodon suave" )
-
-        var listProduct = listOf<Product>(product, product1)
-        val adapter = ProductAdapter(this, listProduct)
-        listHome.adapter = adapter
 
         addPost.setOnClickListener{
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)

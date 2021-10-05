@@ -1,8 +1,10 @@
 package com.example.hanut.activities
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -15,25 +17,31 @@ import kotlinx.android.synthetic.main.auth_activity.*
 
 class MainActivity : AppCompatActivity() {
 
+
     enum class ProviderType{
         BASIC,
         GOOGLE
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /* SetUp
+        /*
+        val logOutButton = findViewById<Button>(R.id.logOutButton)
+        // SetUp
         val bundle:Bundle? = intent.extras
         val email:String? = bundle?.getString("email")
         val provider:String? = bundle?.getString("provider")
         setUp(email?:"",provider?:"")
+
         val prefs: SharedPreferences.Editor? = getSharedPreferences(getString(R.string.prefs_file), MODE_PRIVATE).edit()
         prefs?.putString("email", email)
         prefs?.putString("provider", provider)
-        prefs?.apply()*/
+        prefs?.apply()
+         */
 
         // Action bar inferior
         var bottomNavigation: BottomNavigationView?
@@ -61,19 +69,19 @@ class MainActivity : AppCompatActivity() {
         actionToolBar.callActionBar(topAppBar, this)
     }
 
-    /*private fun setUp(email:String, provider:String){
-     */
-        /*
+    /*
+    private fun setUp(email:String, provider:String){
         // Borrar datos en caso de que se cierren las preferencias:
-        val prefs: SharedPreferences.Editor! = getSharedPreferences(getString(R.string.prefs_file), Context.PRIVATE_MODE).edit()
+        val prefs: SharedPreferences.Editor = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
         prefs.clear()
         prefs.apply()
-            logOutButton.setOnClickListener{
-                FirebaseAuth.getInstance().singOut()
-                onBackPressed()
-            }
+        logOutButton.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+            onBackPressed()
+        }
+    }
+     */
 
-    }*/
     fun openFragment(fragment: Fragment?) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment!!)

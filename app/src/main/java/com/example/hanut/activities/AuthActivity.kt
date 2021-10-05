@@ -3,6 +3,7 @@ package com.example.hanut.activities
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -22,10 +23,14 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthCredential
+import com.google.firebase.auth.GoogleAuthProvider
 import dmax.dialog.SpotsDialog
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.auth_activity.*
 
 
@@ -33,6 +38,7 @@ class AuthActivity : AppCompatActivity() {
 
     var btnLoginGoogle: SignInButton? = null
     var mDialog: android.app.AlertDialog? = null
+    val GOOGLE_SIGN_IN:Int = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,11 +52,6 @@ class AuthActivity : AppCompatActivity() {
         btnLoginGoogle = findViewById(R.id.btnLoginGoogle)
         mDialog = SpotsDialog.Builder().setContext(this).setMessage("Espere").build()
 
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(R.string.default_web_client_id.toString())
-            .requestEmail()
-            .build()
 
         val window = this.window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -61,12 +62,11 @@ class AuthActivity : AppCompatActivity() {
         //session()
     }
 
-    /*override fun onStart() {
+    /*
+    override fun onStart() {
         super.onStart()
         authLayout.visibility = View.VISIBLE
     }
-
-
     private fun session() {
         val prefs: SharedPreferences = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email: String? = prefs.getString("email", null)
@@ -75,7 +75,8 @@ class AuthActivity : AppCompatActivity() {
             authLayout.visibility = View.INVISIBLE
             showHome(email, MainActivity.ProviderType.valueOf(provider))
         }
-    }*/
+    }
+     */
     
      fun setUp(){
         title = "Autenticación"
@@ -86,6 +87,7 @@ class AuthActivity : AppCompatActivity() {
                     passwordText.text.toString()).addOnCompleteListener{
                     if(it.isSuccessful){
                         showHome(it.result?.user?.email?:"", MainActivity.ProviderType.BASIC)
+
                     }else{
                         showAlert("Error","No se pudo ingresar")
                     }
@@ -104,6 +106,39 @@ class AuthActivity : AppCompatActivity() {
                 }
             }
         }
+         btnLoginGoogle?.setOnClickListener {
+             // Configuracion
+             val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                 .requestIdToken(getString(R.string.default_web_client_id))
+                 .requestEmail()
+                 .build()
+
+             val googleClient = GoogleSignIn.getClient(this, googleConf)
+             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
+         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == GOOGLE_SIGN_IN){
+            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try{
+                val account = task.getResult(ApiException::class.java)
+                if(account != null){
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+                        if(it.isSuccessful){
+                            showHome(account.email ?: "", MainActivity.ProviderType.GOOGLE)
+                        }else{
+                            showAlert("Error", "Ocurrió un error de autenticación con cuenta google")
+                        }
+                    }
+                }
+            } catch (e:ApiException){
+                showAlert("Error", "${e}")
+                Log.v("Error", "${e}" )
+            }
+        }
     }
 
     fun showAlert(title:String, message:String){
@@ -120,6 +155,6 @@ class AuthActivity : AppCompatActivity() {
             putExtra("provider", provider.name)
         }
         startActivity(homeIntent)
-         finish()
+        finish()
     }
 }

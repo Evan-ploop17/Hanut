@@ -13,8 +13,10 @@ public class PostProvider {
         mCollection = FirebaseFirestore.getInstance().collection("Posts");
     }
 
-    /*public Task<Void> save(Post post){
+    // Recibe el modelo Post con todos los atributos que este tiene 
+    public Task<Void> save(Post post){
+        // Con document() sin parametros le damos un ID único a cada publicación
         return mCollection.document().set(post);
-    }*/
+    }
 
 }

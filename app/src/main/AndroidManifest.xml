@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hanut">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
     <uses-permission
         android:name="android.permission.INTERNET" />
     <uses-permission
@@ -22,6 +25,20 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        
+        <provider
+            android:authorities="com.example.hanut"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+
+        </provider>
+
+
         <activity
             android:name=".activities.PostActivity"
             android:exported="true" />

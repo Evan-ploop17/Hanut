@@ -27,6 +27,7 @@ public class ImageProvider {
         return task;
     }
 
+    // Con este objeto podemos obtener la URL donde esta la imágen del producto
     public StorageReference getStorage(){
         return mStorage;
     }

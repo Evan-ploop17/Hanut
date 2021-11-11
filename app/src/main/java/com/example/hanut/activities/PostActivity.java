@@ -21,10 +21,11 @@ import android.widget.Toast;
 
 import com.example.hanut.R;
 import com.example.hanut.models.Post;
+import com.example.hanut.providers.AuthProvider;
 import com.example.hanut.providers.ImageProvider;
 import com.example.hanut.providers.PostProvider;
 import com.example.hanut.utils.FileUtil;
-import com.example.socialmediagamer.providers.AuthProvider;
+import com.example.hanut.providers.AuthProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -60,11 +61,17 @@ public class PostActivity extends AppCompatActivity {
     private final int GALLERY_REQUEST_CODE = 1;
     private final int GALLERY_REQUEST_CODE_2  = 2;
     private final int PHOTO_REQUEST_CODE = 3;
+    private final int PHOTO_REQUEST_CODE_2 = 4;
     CharSequence options[];
 
+    // Foto 1
     String mAbsolutePhotoPhat;
     String mPhotoPath;
     File mPhotoFile;
+    // Foto 2
+    String mAbsolutePhotoPhat2;
+    String mPhotoPath2;
+    File mPhotoFile2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +97,7 @@ public class PostActivity extends AppCompatActivity {
         mImageViewPost1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectOptionImage(GALLERY_REQUEST_CODE);
+                selectOptionImage(1);
                 //openGallery(GALLERY_REQUEST_CODE);
             }
         });
@@ -99,7 +106,7 @@ public class PostActivity extends AppCompatActivity {
         mImageViewPost2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectOptionImage(GALLERY_REQUEST_CODE_2);
+                selectOptionImage(2);
                 //openGallery(GALLERY_REQUEST_CODE_2);
             }
         });
@@ -113,27 +120,37 @@ public class PostActivity extends AppCompatActivity {
         });
     }
 
-    private void selectOptionImage(int requestCode) {
+    private void selectOptionImage(int numberImage) {
         mDialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(i==0){
-                    openGallery(requestCode);
+                if( i == 0 ){
+                    if(numberImage == 1){
+                        openGallery(GALLERY_REQUEST_CODE);
+                    }
+                    else if(numberImage == 2){
+                        openGallery(GALLERY_REQUEST_CODE_2);
+                    }
                 }
-                else{
-                    takePhoto();
+                else if(i == 1){
+                    if(numberImage == 1){
+                        takePhoto(PHOTO_REQUEST_CODE);
+                    }
+                    else if(numberImage == 2){
+                        takePhoto(PHOTO_REQUEST_CODE_2);
+                    }
                 }
             }
         });
         mDialogBuilder.show();
     }
 
-    private void takePhoto() {
+    private void takePhoto(int requestCode) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(takePictureIntent.resolveActivity(getPackageManager()) != null){
             File photoFile = null;
             try{
-                photoFile = createPhotoFile();
+                photoFile = createPhotoFile(requestCode);
             }catch (Exception e){
                 Toast.makeText(PostActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -141,19 +158,24 @@ public class PostActivity extends AppCompatActivity {
                 Uri photoUri = FileProvider.getUriForFile( PostActivity.this, "com.example.hanut", photoFile );
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 // este metodo siempre espera lo que pase en el onActivityResult()
-                startActivityForResult(takePictureIntent, PHOTO_REQUEST_CODE);
+                startActivityForResult(takePictureIntent, requestCode);
             }
         }
     }
-    private File createPhotoFile() throws IOException {
+    private File createPhotoFile(int requestCode) throws IOException {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File photoFile = File.createTempFile(
                 new Date() + "_photo",
                 ".jpg",
                 storageDir
         );
-        mPhotoPath = "file:" + photoFile.getAbsolutePath();
-        mAbsolutePhotoPhat = photoFile.getAbsolutePath();
+        if(requestCode == PHOTO_REQUEST_CODE){
+            mPhotoPath = "file:" + photoFile.getAbsolutePath();
+            mAbsolutePhotoPhat = photoFile.getAbsolutePath();
+        }else if(requestCode == PHOTO_REQUEST_CODE_2){
+            mPhotoPath2 = "file:" + photoFile.getAbsolutePath();
+            mAbsolutePhotoPhat2 = photoFile.getAbsolutePath();
+        }
         return photoFile;
     }
 
@@ -163,8 +185,21 @@ public class PostActivity extends AppCompatActivity {
         mDescription = mTextInputDescription.getText().toString();
 
         if(!mTitle.isEmpty() && !mDescription.isEmpty() && !mCategory.isEmpty()){
-            if(mImageFile != null){
-                saveImage();
+            // Selecciono ambas imágenes de la galeria
+            if(mImageFile != null && mImageFile2 != null){
+                saveImage(mImageFile, mImageFile2);
+            }
+            // Tomo las dos fotos de la camara
+            else if(mPhotoFile != null && mPhotoFile2 != null ){
+                saveImage(mPhotoFile, mPhotoFile2);
+            }
+            // Primera galeria y segunda foto
+            else if(mImageFile != null && mPhotoFile2 != null ){
+                saveImage(mImageFile, mPhotoFile2);
+            }
+            // Primera foto y segunda galeria
+            else if(mPhotoFile != null && mImageFile2 != null ){
+                saveImage(mPhotoFile, mImageFile2);
             }
             else{
                 Toast.makeText(PostActivity.this,"Choose an Image", Toast.LENGTH_LONG).show();
@@ -175,9 +210,9 @@ public class PostActivity extends AppCompatActivity {
         }
     }
 
-    private void saveImage(){
+    private void saveImage(File imageFile, File imageFile2){
         mDialog.show();
-        mImageProvider.save(PostActivity.this, mImageFile ).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+        mImageProvider.save(PostActivity.this, imageFile ).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 if(task.isSuccessful()){
@@ -187,8 +222,7 @@ public class PostActivity extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
                             // Este método nos devuelve una uri y la transformarmos en string
                             String url = uri.toString();
-
-                            mImageProvider.save(PostActivity.this, mImageFile2).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            mImageProvider.save(PostActivity.this, imageFile2).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> taskImage2) {
                                     if(taskImage2.isSuccessful()){
@@ -250,6 +284,7 @@ public class PostActivity extends AppCompatActivity {
 
         if(requestCode == GALLERY_REQUEST_CODE && requestCode != RESULT_OK){
             try{
+                mPhotoFile = null;
                 // Transformar la URI en archivo
                 mImageFile = FileUtil.from(this, data.getData());
                 // Para que la imágen seleccionada aparezca en la pantalla
@@ -262,6 +297,7 @@ public class PostActivity extends AppCompatActivity {
 
         if(requestCode == GALLERY_REQUEST_CODE_2 && requestCode != RESULT_OK){
             try{
+                mPhotoFile2 = null;
                 // Transformar la URI en archivo
                 mImageFile2 = FileUtil.from(this, data.getData());
                 // Para que la imágen seleccionada aparezca en la pantalla
@@ -270,10 +306,19 @@ public class PostActivity extends AppCompatActivity {
                 Log.d("ERROR ","There is an error: " + e.getMessage());
                 Toast.makeText(PostActivity.this, "There is an error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
-        } 
+        }
         // SELECCIÓN DE FOTOGRAFÍA
+        // foto 1
         if(requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK){
+            mImageFile = null;
+            mPhotoFile = new File(mAbsolutePhotoPhat);
             Picasso.with(PostActivity.this).load(mPhotoPath).into(mImageViewPost1);
+        }
+        // foto 2
+        if(requestCode == PHOTO_REQUEST_CODE_2 && resultCode == RESULT_OK){
+            mImageFile2 = null;
+            mPhotoFile2 = new File(mAbsolutePhotoPhat2);
+            Picasso.with(PostActivity.this).load(mPhotoPath2).into(mImageViewPost2);
         }
 
     }
@@ -289,4 +334,7 @@ public class PostActivity extends AppCompatActivity {
         mImageFile = null;
         mImageFile2 = null;
     }
+
+
+    // FInal de la clase
 }

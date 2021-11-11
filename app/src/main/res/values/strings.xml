@@ -13,6 +13,8 @@
     <string name="publicar">Publicar</string>
     <string name="categoria">Categoria</string>
     <string name="prefs_file">com.example.hanut.PREFERENCE_FILE_KEY</string>
+    <string name="publicaciones">Publicaciones</string>
+    <string name="cerrar_sesion">Cerrar Sesión</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

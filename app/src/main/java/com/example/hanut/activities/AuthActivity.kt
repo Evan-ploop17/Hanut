@@ -1,36 +1,24 @@
 package com.example.hanut.activities
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.hanut.R
-import com.example.hanut.providers.UserProvider
-import com.example.socialmediagamer.providers.AuthProvider
+import com.example.hanut.providers.AuthProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import dmax.dialog.SpotsDialog
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.auth_activity.*
 
 
@@ -39,6 +27,7 @@ class AuthActivity : AppCompatActivity() {
     var btnLoginGoogle: SignInButton? = null
     var mDialog: android.app.AlertDialog? = null
     val GOOGLE_SIGN_IN:Int = 100
+    lateinit var mAuthProvider: AuthProvider;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +38,10 @@ class AuthActivity : AppCompatActivity() {
         bundle.putString("Mensaje", "Integracin de firebase completa")
         analytics.logEvent("InitScreen", bundle)
 
+        mAuthProvider = AuthProvider();
+
         btnLoginGoogle = findViewById(R.id.btnLoginGoogle)
         mDialog = SpotsDialog.Builder().setContext(this).setMessage("Espere").build()
-
 
         val window = this.window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -60,6 +50,16 @@ class AuthActivity : AppCompatActivity() {
         
         setUp()
         //session()
+    }
+
+    // Esto es para que si el usuario cierrar la app pero no cierra sesion al brirla no deba usar iniciar sesion nuevamente
+    override fun onStart() {
+        super.onStart()
+        if( mAuthProvider.userSession != null){
+            var intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
     }
 
     /*

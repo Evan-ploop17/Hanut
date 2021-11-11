@@ -16,41 +16,22 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.auth_activity.*
 
 class MainActivity : AppCompatActivity() {
-
-
     enum class ProviderType{
         BASIC,
         GOOGLE
     }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        /*
-        val logOutButton = findViewById<Button>(R.id.logOutButton)
-        // SetUp
-        val bundle:Bundle? = intent.extras
-        val email:String? = bundle?.getString("email")
-        val provider:String? = bundle?.getString("provider")
-        setUp(email?:"",provider?:"")
-
-        val prefs: SharedPreferences.Editor? = getSharedPreferences(getString(R.string.prefs_file), MODE_PRIVATE).edit()
-        prefs?.putString("email", email)
-        prefs?.putString("provider", provider)
-        prefs?.apply()
-         */
-
         // Action bar inferior
         var bottomNavigation: BottomNavigationView?
         bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
         openFragment(HomeFragment())
 
-        val actionBar: ActionBar? = supportActionBar
-        actionBar?.hide()
+        /*val actionBar: ActionBar? = supportActionBar
+        actionBar?.hide()*/
 
         // Lista por defecto
         val product = Product(R.drawable.ropa, "Ropa", 100.0, "Algodon suave" )
@@ -65,8 +46,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Lllamamos la funcionalidad del action bar
-        val actionToolBar: ActionBarHanut = ActionBarHanut()
-        actionToolBar.callActionBar(topAppBar, this)
+        // val actionToolBar: ActionBarHanut = ActionBarHanut()
+        // actionToolBar.callActionBar(topAppBar, this)
     }
 
     /*

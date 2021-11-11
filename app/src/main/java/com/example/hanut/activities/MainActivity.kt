@@ -34,6 +34,11 @@ class MainActivity : AppCompatActivity() {
         actionBar?.hide()*/
 
         // Lista por defecto
+
+        /*
+
+        Esta lista de datos quemados no se usará. En su lugar se uso un recycler view
+
         val product = Product(R.drawable.ropa, "Ropa", 100.0, "Algodon suave" )
         val product1 = Product(R.drawable.hanut, "Hanut", 100.0, "Algodon suave" )
         var listProduct = listOf<Product>(product, product1)
@@ -43,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ProductActivity::class.java)
             intent.putExtra("product" , listProduct[i])
             startActivity(intent)
-        }
+        }*/
 
         // Lllamamos la funcionalidad del action bar
         // val actionToolBar: ActionBarHanut = ActionBarHanut()

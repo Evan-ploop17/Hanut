@@ -47,7 +47,7 @@ class AuthActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
-        
+
         setUp()
         //session()
     }
@@ -56,28 +56,12 @@ class AuthActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if( mAuthProvider.userSession != null){
-            var intent = Intent(this, MainActivity::class.java)
+            var intent = Intent(this, HomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
     }
 
-    /*
-    override fun onStart() {
-        super.onStart()
-        authLayout.visibility = View.VISIBLE
-    }
-    private fun session() {
-        val prefs: SharedPreferences = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
-        val email: String? = prefs.getString("email", null)
-        val provider:String? = prefs.getString("provider", null)
-        if(email != null && provider!= null){
-            authLayout.visibility = View.INVISIBLE
-            showHome(email, MainActivity.ProviderType.valueOf(provider))
-        }
-    }
-     */
-    
      fun setUp(){
         title = "Autenticación"
         signUpBtn.setOnClickListener{
@@ -86,7 +70,7 @@ class AuthActivity : AppCompatActivity() {
                     .createUserWithEmailAndPassword(emailText.text.toString(),
                     passwordText.text.toString()).addOnCompleteListener{
                     if(it.isSuccessful){
-                        showHome(it.result?.user?.email?:"", MainActivity.ProviderType.BASIC)
+                        showHome(it.result?.user?.email?:"", HomeActivity.ProviderType.BASIC)
 
                     }else{
                         showAlert("Error","No se pudo ingresar")
@@ -99,7 +83,7 @@ class AuthActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(emailText.text.toString(),
                     passwordText.text.toString()).addOnCompleteListener{
                     if(it.isSuccessful){
-                        showHome(it.result?.user?.email?:"", MainActivity.ProviderType.BASIC)
+                        showHome(it.result?.user?.email?:"", HomeActivity.ProviderType.BASIC)
                     }else{
                         showAlert("Error","No se pudo ingresar")
                     }
@@ -128,7 +112,7 @@ class AuthActivity : AppCompatActivity() {
                     val credential = GoogleAuthProvider.getCredential(account.idToken, null)
                     FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
                         if(it.isSuccessful){
-                            showHome(account.email ?: "", MainActivity.ProviderType.GOOGLE)
+                            showHome(account.email ?: "", HomeActivity.ProviderType.GOOGLE)
                         }else{
                             showAlert("Error", "Ocurrió un error de autenticación con cuenta google")
                         }
@@ -149,8 +133,8 @@ class AuthActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.show()
     }
-     fun showHome(email:String, provider: MainActivity.ProviderType){
-        val homeIntent = Intent(this, MainActivity::class.java).apply {
+     fun showHome(email:String, provider: HomeActivity.ProviderType){
+        val homeIntent = Intent(this, HomeActivity::class.java).apply {
             putExtra("email", email)
             putExtra("provider", provider.name)
         }

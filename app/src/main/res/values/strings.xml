@@ -15,6 +15,31 @@
     <string name="prefs_file">com.example.hanut.PREFERENCE_FILE_KEY</string>
     <string name="publicaciones">Publicaciones</string>
     <string name="cerrar_sesion">Cerrar Sesión</string>
+
+
+    <string name="mail">Mail</string>
+    <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="logo">Logo</string>
+    <string name="register_activity">Pantalla de registro</string>
+    <string name="sign_up_here">Sign Up</string>
+    <string name="user">Usuario</string>
+    <string name="register">Registrar</string>
+    <string name="home">Home</string>
+    <string name="complete_info">Complete la información del perfil</string>
+    <string name="confirm">Confirmar</string>
+    <string name="wait">Espere un momento</string>
+    <string name="post_something">Publicar</string>
+    <string name="name_game">Nombre producto</string>
+    <string name="description">Descripcion</string>
+    <string name="cost">Costo</string>
+    <string name="category">Categoria</string>
+    <string name="post">Post</string>
+    <string name="publications">Publicaciones</string>
+    <string name="log_out">Cerrar sesion</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+
 </resources>

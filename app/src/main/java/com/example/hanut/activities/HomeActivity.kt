@@ -1,21 +1,16 @@
 package com.example.hanut.activities
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Button
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.hanut.R
 import com.example.hanut.fragments.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.auth_activity.*
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     enum class ProviderType{
         BASIC,
         GOOGLE
@@ -23,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
         // Action bar inferior
         var bottomNavigation: BottomNavigationView?
         bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)

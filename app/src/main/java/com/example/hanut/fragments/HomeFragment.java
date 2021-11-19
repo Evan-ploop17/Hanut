@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
 
     private void logOut() {
         mAuthProvider.logout();
-        Intent intent = new Intent(getContext(), AuthActivity.class);
+        Intent intent = new Intent(getContext(), MainActivity.class);
         intent.setFlags( intent.FLAG_ACTIVITY_CLEAR_TASK | intent.FLAG_ACTIVITY_NEW_TASK );
         startActivity(intent);
     }

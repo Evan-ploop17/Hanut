@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -28,7 +29,8 @@ import dmax.dialog.SpotsDialog;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    TextInputEditText textInputUserName, textInputUserMail, textInputUserPassword, textInputUserConfirmPassword;
+    TextInputEditText textInputUserName, textInputUserMail, textInputUserPassword, textInputUserConfirmPassword,
+            mTextInputPhone ;
     Button btnRegister;
     AuthProvider mAuthProvider;
     UserProvider mUsersProvider;
@@ -43,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         textInputUserMail = findViewById(R.id.textInputMail);
         textInputUserPassword = findViewById(R.id.textInputPassword);
         textInputUserConfirmPassword = findViewById(R.id.textInputConfirmPassword);
+        mTextInputPhone = findViewById(R.id.textInputPhone);
         btnRegister = findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,13 +66,14 @@ public class RegisterActivity extends AppCompatActivity {
         String mail = textInputUserMail.getText().toString();
         String pass = textInputUserPassword.getText().toString();
         String confirmPassword = textInputUserConfirmPassword.getText().toString();
+        String phone = mTextInputPhone.getText().toString();
 
-        if(!userName.isEmpty() && !mail.isEmpty() && !pass.isEmpty() && !confirmPassword.isEmpty() ){
+        if(!userName.isEmpty() && !mail.isEmpty() && !pass.isEmpty() && !confirmPassword.isEmpty() && !phone.isEmpty()){
 
             if(isEmailValid(mail)){
                 if(pass.equals(confirmPassword)){
                     if(pass.length() > 6){
-                        createUser(userName, mail, pass);
+                        createUser(userName, mail, pass, phone);
                     }
                     else{
                         Toast.makeText(this, "Password need 6 characters", Toast.LENGTH_LONG).show();
@@ -84,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     // Método para crear el usuario
-    private void createUser(final String userName, final String mail, String password){
+    private void createUser(final String userName, final String mail, String password, String phone){
         mDialog.show();
         mAuthProvider.register(mail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -95,7 +99,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                     User user = new User();
                     user.setId(userId);
+                    user.setUserName(userName);
                     user.setEmail(mail);
+                    user.setPhone(phone);
+                    // COn esto no aseguramos de tener la fecha exacta en la que se creo el usuario
+                    user.setTimestamp(new Date().getTime());
 
                     mUsersProvider.create(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

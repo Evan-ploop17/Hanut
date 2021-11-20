@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
                     mDialog.dismiss();
                     if(task.isSuccessful()){
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }else{
                         Toast.makeText(MainActivity.this, "X Wrong X", Toast.LENGTH_LONG).show();

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.hanut.R
 import com.example.hanut.fragments.HomeFragment
+import com.example.hanut.fragments.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.auth_activity.*
@@ -25,43 +26,9 @@ class HomeActivity : AppCompatActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
         openFragment(HomeFragment())
 
-        /*val actionBar: ActionBar? = supportActionBar
-        actionBar?.hide()*/
 
-        // Lista por defecto
-
-        /*
-
-        Esta lista de datos quemados no se usará. En su lugar se uso un recycler view
-
-        val product = Product(R.drawable.ropa, "Ropa", 100.0, "Algodon suave" )
-        val product1 = Product(R.drawable.hanut, "Hanut", 100.0, "Algodon suave" )
-        var listProduct = listOf<Product>(product, product1)
-        val adapter = ProductAdapter(this, listProduct)
-        listHome.adapter = adapter
-        listHome.setOnItemClickListener { adapterView, view, i, l ->
-            val intent = Intent(this, ProductActivity::class.java)
-            intent.putExtra("product" , listProduct[i])
-            startActivity(intent)
-        }*/
-
-        // Lllamamos la funcionalidad del action bar
-        // val actionToolBar: ActionBarHanut = ActionBarHanut()
-        // actionToolBar.callActionBar(topAppBar, this)
     }
 
-    /*
-    private fun setUp(email:String, provider:String){
-        // Borrar datos en caso de que se cierren las preferencias:
-        val prefs: SharedPreferences.Editor = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-        prefs.clear()
-        prefs.apply()
-        logOutButton.setOnClickListener{
-            FirebaseAuth.getInstance().signOut()
-            onBackPressed()
-        }
-    }
-     */
 
     fun openFragment(fragment: Fragment?) {
         val transaction = supportFragmentManager.beginTransaction()
@@ -86,9 +53,7 @@ class HomeActivity : AppCompatActivity() {
                     //return@OnNavigationItemSelectedListener true
                 }
                 R.id.itemProfile -> {
-                    val intent = Intent(this, Profile::class.java)
-                    startActivity(intent)
-
+                    openFragment(ProfileFragment())
                     return@OnNavigationItemSelectedListener true
                 }
             }

@@ -54,10 +54,11 @@ public class PostActivity extends AppCompatActivity {
     File mImageFile;
     File mImageFile2;
     AlertDialog mDialog;
-    AlertDialog.Builder mDialogBuilder;
     PostProvider mPostProvider;
     ImageProvider mImageProvider;
     AuthProvider mAuthProvider;
+
+    AlertDialog.Builder mDialogBuilder;
     private final int GALLERY_REQUEST_CODE = 1;
     private final int GALLERY_REQUEST_CODE_2  = 2;
     private final int PHOTO_REQUEST_CODE = 3;
@@ -83,15 +84,15 @@ public class PostActivity extends AppCompatActivity {
         mAuthProvider = new AuthProvider();
 
         // Mensaje
-          mDialog = new SpotsDialog.Builder().setContext(this).setMessage("Espere un momento").build();
+        mDialog = new SpotsDialog.Builder().setContext(this).setMessage("Espere un momento").build();
         mDialogBuilder = new AlertDialog.Builder(this);
         mDialogBuilder.setTitle("Choose an option");
+        options = new CharSequence[] { "Imagen de galeria",  "Camara"};
 
         mTextInputTitle = findViewById(R.id.textInputTitle);
         mTextInputCategory = findViewById(R.id.textInputCategory);
         mTextInputDescription = findViewById(R.id.textInputDescription);
 
-        options = new CharSequence[] { "Imagen de galeria",  "Camara"};
 
         mImageViewPost1 = findViewById(R.id.imageViewPost1);
         mImageViewPost1.setOnClickListener(new View.OnClickListener() {
@@ -238,6 +239,7 @@ public class PostActivity extends AppCompatActivity {
                                                 post.setDescription(mDescription);
                                                 post.setCategory(mCategory);
                                                 post.setIdUser(mAuthProvider.getUid());
+                                                post.setTimestamp(new Date().getTime());
                                                 // addOnCompleteListener se usa para saer si se termino de ejecutar la tarea
                                                 mPostProvider.save(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     // cambiamos el nombre de la tarea a taskSave para evitar choques con la otra

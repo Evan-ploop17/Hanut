@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import dmax.dialog.SpotsDialog;
 public class CompleteProfileActivity extends AppCompatActivity {
 
     TextInputEditText textInputUserName;
+    TextInputEditText textInputPhone;
     Button btnRegister;
     AuthProvider mAuthProvider;
     UserProvider mUsersProvider;
@@ -47,6 +49,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
 
         textInputUserName = findViewById(R.id.textInputUser);
         btnRegister = findViewById(R.id.btnRegister);
+        textInputPhone = findViewById(R.id.textInputPhone);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,19 +62,23 @@ public class CompleteProfileActivity extends AppCompatActivity {
 
     private void register(){
         String userName = textInputUserName.getText().toString();
-        if(!userName.isEmpty() ){
-            update(userName);
+        String phone = textInputPhone.getText().toString();
+        if(!userName.isEmpty() && !phone.isEmpty()){
+            update(userName, phone);
         }else{
             Toast.makeText(this, "Type info", Toast.LENGTH_LONG).show();
         }
     }
 
     // Método para crear el usuario
-    private void update(final String userName){
+    private void update(final String userName, final String phone){
         String id = mAuthProvider.getUid();
         User user = new User();
         user.setUserName(userName);
         user.setId(id);
+        user.setPhone(phone);
+        user.setTimestamp(new Date().getTime());
+
         mDialog.show();
         // Update por get para que no sobreescriba los valores
         mUsersProvider.update(user).addOnCompleteListener(new OnCompleteListener<Void>() {

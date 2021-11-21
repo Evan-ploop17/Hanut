@@ -80,5 +80,8 @@ dependencies {
     // Nos permite listar información que viene desde FireStore
     implementation 'com.firebaseui:firebase-ui-firestore:8.0.0'
 
+    // Libreria para el slider del el post activity
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
+
     kapt "androidx.room:room-compiler:$room_version"
 }

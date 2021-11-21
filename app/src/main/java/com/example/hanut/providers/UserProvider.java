@@ -29,7 +29,7 @@ public class UserProvider {
 
     public Task<Void> update(User user) {
         Map<String, Object> map = new HashMap<>();
-        map.put("username", user.getUserName());
+        map.put("userName", user.getUserName());
         map.put("phone", user.getPhone());
         map.put("timestamp", new Date().getTime());
         map.put("image_profile", user.getImageProfile());

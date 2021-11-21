@@ -3,6 +3,7 @@ package com.example.hanut.providers;
 import com.example.hanut.models.Post;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -24,6 +25,16 @@ public class PostProvider {
     // Obtenemos todos los post ordenados por titulos de forma descendiente
     public Query getAll(){
         return mCollection.orderBy("title", Query.Direction.DESCENDING);
+    }
+
+    // Buscar todos los post donde el id del usuario es igual al id que recibe por parametro
+    public Query getPostByUser(String id){
+        return mCollection.whereEqualTo("idUser", id);
+    }
+
+    // Obtener publicación por ID
+    public Task<DocumentSnapshot> getPostById(String id){
+        return mCollection.document(id).get();
     }
 
 }

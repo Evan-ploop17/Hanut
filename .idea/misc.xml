@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.10885416666666667" />
+        <entry key="app/src/main/res/drawable/button_border.xml" value="0.27395833333333336" />
         <entry key="app/src/main/res/drawable/ic_account_circle_white_50.xml" value="0.16018518518518518" />
         <entry key="app/src/main/res/drawable/ic_mail_gray.xml" value="0.26974358974358975" />
         <entry key="app/src/main/res/drawable/ic_mail_white.xml" value="0.16018518518518518" />
@@ -20,7 +21,7 @@
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.14945652173913043" />
         <entry key="app/src/main/res/layout/activity_porfile.xml" value="0.15443840579710144" />
         <entry key="app/src/main/res/layout/activity_post.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/activity_post_detail.xml" value="0.16032608695652173" />
+        <entry key="app/src/main/res/layout/activity_post_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_product.xml" value="0.13722826086956522" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/auth_activity.xml" value="0.33" />

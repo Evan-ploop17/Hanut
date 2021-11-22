@@ -26,7 +26,8 @@
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_user_profile.xml" value="0.2578125" />
         <entry key="app/src/main/res/layout/auth_activity.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/cardview_post.xml" value="0.17119565217391305" />
+        <entry key="app/src/main/res/layout/cardview_comment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/cardview_post.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/slider_layout_item.xml" value="0.16032608695652173" />

@@ -1,7 +1,11 @@
 package com.example.hanut.activities;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,18 +21,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hanut.R;
+import com.example.hanut.adapters.CommentAdapter;
+import com.example.hanut.adapters.PostsAdapter;
 import com.example.hanut.adapters.SliderAdapter;
 import com.example.hanut.models.Comment;
+import com.example.hanut.models.Post;
 import com.example.hanut.models.SliderItem;
 import com.example.hanut.providers.AuthProvider;
 import com.example.hanut.providers.CommentsProvider;
 import com.example.hanut.providers.PostProvider;
 import com.example.hanut.providers.UserProvider;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.IndicatorView.draw.data.Indicator;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -47,6 +56,10 @@ public class PostDetailActivity extends AppCompatActivity {
     SliderView mSliderView;
     SliderAdapter mSliderAdapter;
     List<SliderItem> mSliderItems = new ArrayList<>();
+    RecyclerView mRecyclerView;
+
+    // ADAPTERS
+    CommentAdapter mCommentAdapter;
 
     // Providers
     PostProvider mPostProvider;
@@ -84,22 +97,24 @@ public class PostDetailActivity extends AppCompatActivity {
         mCircleImageViewProfile = findViewById(R.id.circleImageProfile);
         mButtonShowProfile = findViewById(R.id.btnShowProfile);
         mFabComment = findViewById(R.id.fabComment);
+        mRecyclerView = findViewById(R.id.recyclerViewComments);
 
-        //                  PROVIDERS
+        // COn este código generamos in linear layout de xml y hacemos que las tarjetas se muestren una sobre la otra
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PostDetailActivity.this);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        // PROVIDERS
         mPostProvider = new PostProvider();
         mUserProvider = new UserProvider();
         mCommentsProvider = new CommentsProvider();
         mAuthProvider = new AuthProvider();
-
         mExtraPostId = getIntent().getStringExtra("id");
-
         mFabComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDialogComment();
             }
         });
-
         mButtonShowProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,8 +122,30 @@ public class PostDetailActivity extends AppCompatActivity {
                 
             }
         });
-
         getPost();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Acá vamos a hacer una consulta a la base de datos
+        Query query = mCommentsProvider.getCommentsByPost(mExtraPostId);
+        FirestoreRecyclerOptions<Comment> options =
+                new FirestoreRecyclerOptions.Builder<Comment>()
+                        .setQuery(query, Comment.class)
+                        .build();
+        mCommentAdapter =  new CommentAdapter( options, PostDetailActivity.this);
+        mRecyclerView.setAdapter(mCommentAdapter);
+        // DB en tiempo real entonces el metodo listening esta pendiente de esos cambios en tiempor real
+        mCommentAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mCommentAdapter.stopListening();
+
     }
 
     private void showDialogComment() {

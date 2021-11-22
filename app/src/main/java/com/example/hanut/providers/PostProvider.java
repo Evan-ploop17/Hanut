@@ -23,8 +23,9 @@ public class PostProvider {
 
     // Método para hacer consultas en la base de datos usado en HOmeFragment
     // Obtenemos todos los post ordenados por titulos de forma descendiente
+    // Con el Timestamp vamos a ordenar las publicaciones por ultima realizada
     public Query getAll(){
-        return mCollection.orderBy("title", Query.Direction.DESCENDING);
+        return mCollection.orderBy("timestamp", Query.Direction.DESCENDING);
     }
 
     // Buscar todos los post donde el id del usuario es igual al id que recibe por parametro

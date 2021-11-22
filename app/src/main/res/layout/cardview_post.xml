@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,7 +15,7 @@
         <ImageView
             android:id="@+id/imageViewPostCard"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="200dp"
             android:scaleType="centerCrop" />
 
         <TextView
@@ -29,15 +30,56 @@
 <!-- si el texto es muy largo no permite que pase mas de una linea -->
 
         <TextView
+            android:id="@+id/textViewUserNamePostCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
+            android:text="Usuario que publicó el post"
+            android:maxLines="1"
+            android:textColor="@color/colorAccent"
+            android:textSize="13dp" />
+
+        <TextView
             android:id="@+id/textViewDescriptionPostCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="10dp"
             android:paddingTop="10dp"
             android:text="Descripción del juego"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:maxLines="2"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/greyLight"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:id="@+id/imageViewLike"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+               android:src="@drawable/ic_like_grey_96"/>
+
+            <TextView
+                android:id="@+id/textViewLikes"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|right"
+                android:layout_weight="1"
+                android:text="0 me gustas"/>
+
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

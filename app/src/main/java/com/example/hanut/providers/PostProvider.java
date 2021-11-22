@@ -38,4 +38,8 @@ public class PostProvider {
         return mCollection.document(id).get();
     }
 
+    public Task<Void> delete(String idDocument){
+        return mCollection.document(idDocument).delete();
+    }
+
 }

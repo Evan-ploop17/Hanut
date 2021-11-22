@@ -3,7 +3,10 @@ package com.example.hanut.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +17,19 @@ import android.widget.TextView;
 
 import com.example.hanut.R;
 import com.example.hanut.activities.EditProfileActivity;
+import com.example.hanut.adapters.MyPostsAdapter;
+import com.example.hanut.models.Post;
 import com.example.hanut.providers.AuthProvider;
 import com.example.hanut.providers.PostProvider;
 import com.example.hanut.providers.UserProvider;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -33,15 +43,16 @@ public class ProfileFragment extends Fragment {
     UserProvider mUserProvider;
     AuthProvider mAuthProvider;
     PostProvider mPostProvider;
-
     // ELEMENTOS VISUALES
     TextView mTextViewUserName;
     TextView mTextViewPhone;
     TextView mTextViewEmail;
     TextView mTextViewPostNumber;
-
     ImageView mImageCover;
     CircleImageView mImageViewProfile;
+    RecyclerView mRecyclerViewMyPost;
+    // Adapter
+    MyPostsAdapter mAdapter;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -59,6 +70,18 @@ public class ProfileFragment extends Fragment {
         mTextViewPostNumber = mView.findViewById(R.id.textViewPostNumber);
         mImageCover = mView.findViewById(R.id.imageViewCover);
         mImageViewProfile = mView.findViewById(R.id.circleImageProfile);
+        // ADAPTER
+        mRecyclerViewMyPost = mView.findViewById(R.id.recyclerViewMyPost);
+        // COn este código generamos in linear layout de xml y hacemos que las tarjetas se muestren una sobre la otra
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerViewMyPost.setLayoutManager(linearLayoutManager);
+
+        // PROVIDERS
+        mUserProvider = new UserProvider();
+        mAuthProvider = new AuthProvider();
+        mPostProvider = new PostProvider();
+
+
 
         mLinearLayoutEditProfile = mView.findViewById(R.id.linearLayoutEdirProfile);
         mLinearLayoutEditProfile.setOnClickListener(new View.OnClickListener() {
@@ -67,16 +90,29 @@ public class ProfileFragment extends Fragment {
                 goToEditProfile();
             }
         });
-        // PROVIDERS
-        mUserProvider = new UserProvider();
-        mAuthProvider = new AuthProvider();
-        mPostProvider = new PostProvider();
-
         // CARGAR LOS DATOS DEL USUARIO EN SU PERFIL
         getUser();
         // Obtener numero de publicaciones
         getPostNumber();
         return mView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Query query = mPostProvider.getPostByUser(mAuthProvider.getUid());
+        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
+                .setQuery(query, Post.class)
+                .build();
+        mAdapter = new MyPostsAdapter(options, getContext());
+        mRecyclerViewMyPost.setAdapter(mAdapter);
+        mAdapter .startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
     }
 
     private void goToEditProfile() {
@@ -85,11 +121,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getPostNumber(){
-        mPostProvider .getPostByUser(mAuthProvider.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        mPostProvider .getPostByUser(mAuthProvider.getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 // Esto devuelve la cantidad de elementos que se obtienen de la consulta
-                int numberPost = queryDocumentSnapshots.size();
+                int numberPost = value.size();
                 mTextViewPostNumber.setText(String.valueOf(numberPost));
             }
         });

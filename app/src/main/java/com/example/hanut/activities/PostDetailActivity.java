@@ -3,6 +3,7 @@ package com.example.hanut.activities;
 import static java.security.AccessController.getContext;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,15 +30,20 @@ import com.example.hanut.models.Post;
 import com.example.hanut.models.SliderItem;
 import com.example.hanut.providers.AuthProvider;
 import com.example.hanut.providers.CommentsProvider;
+import com.example.hanut.providers.LikesProviders;
 import com.example.hanut.providers.PostProvider;
 import com.example.hanut.providers.UserProvider;
+import com.example.hanut.utils.RelativeTime;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.IndicatorView.draw.data.Indicator;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -66,6 +72,7 @@ public class PostDetailActivity extends AppCompatActivity {
     UserProvider mUserProvider;
     CommentsProvider mCommentsProvider;
     AuthProvider mAuthProvider;
+    LikesProviders mLikesProvider;
 
     String mExtraPostId;
 
@@ -75,6 +82,8 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView mTextViewCategory;
     TextView mTextViewUsername;
     TextView mTextViewPhone;
+    TextView mTextViewRelativeTime;
+    TextView mTextViewLikes;
     CircleImageView mCircleImageViewProfile;
     Button mButtonShowProfile;
     FloatingActionButton mFabComment;
@@ -94,6 +103,8 @@ public class PostDetailActivity extends AppCompatActivity {
         mTextViewCategory = findViewById(R.id.textViewCategory);
         mTextViewUsername = findViewById(R.id.textViewUserName);
         mTextViewPhone = findViewById(R.id.textViewPhone);
+        mTextViewRelativeTime = findViewById(R.id.textViewRelativeTime);
+        mTextViewLikes = findViewById(R.id.textViewLikes);
         mCircleImageViewProfile = findViewById(R.id.circleImageProfile);
         mButtonShowProfile = findViewById(R.id.btnShowProfile);
         mFabComment = findViewById(R.id.fabComment);
@@ -108,6 +119,8 @@ public class PostDetailActivity extends AppCompatActivity {
         mUserProvider = new UserProvider();
         mCommentsProvider = new CommentsProvider();
         mAuthProvider = new AuthProvider();
+        mLikesProvider = new LikesProviders();
+
         mExtraPostId = getIntent().getStringExtra("id");
         mFabComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +135,20 @@ public class PostDetailActivity extends AppCompatActivity {
                 
             }
         });
+
         getPost();
+        getNumberLikes();
+    }
+
+    private void getNumberLikes() {
+        // A diferencia del método onSucesListener, este método implementa los cambios en tiempo real de la BD
+        mLikesProvider.getLikesByPost(mExtraPostId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                int numberLikes = value.size();
+                mTextViewLikes.setText(numberLikes + " Me gustas");
+            }
+        });
     }
 
 
@@ -274,6 +300,11 @@ public class PostDetailActivity extends AppCompatActivity {
                     if(documentSnapshot.contains("idUser")){
                         mIdUser = documentSnapshot.getString("idUser");
                         getUserInfo(mIdUser);
+                    }
+                    if(documentSnapshot.contains("timestamp")){
+                        long timestamp = documentSnapshot.getLong("timestamp");
+                        String relativeTime = RelativeTime.getTimeAgo(timestamp, PostDetailActivity.this);
+                        mTextViewRelativeTime.setText("Publicado " + relativeTime);
                     }
                     instanceSlider();
                 }

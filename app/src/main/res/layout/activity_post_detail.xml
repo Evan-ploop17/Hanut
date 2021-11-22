@@ -16,30 +16,47 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                app:cardCornerRadius="6dp"
-                android:layout_margin="16dp"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="326dp">
 
-                <com.smarteist.autoimageslider.SliderView
-                    android:id="@+id/imageSlider"
+                <androidx.cardview.widget.CardView
+                    app:cardCornerRadius="6dp"
+                    android:layout_margin="16dp"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    app:sliderAnimationDuration="600"
-                    app:sliderAutoCycleDirection="back_and_forth"
-                    app:sliderAutoCycleEnabled="true"
-                    app:sliderIndicatorAnimationDuration="600"
-                    app:sliderIndicatorGravity="center_horizontal|bottom"
-                    app:sliderIndicatorMargin="15dp"
-                    app:sliderIndicatorOrientation="horizontal"
-                    app:sliderIndicatorPadding="3dp"
-                    app:sliderIndicatorRadius="2dp"
-                    app:sliderIndicatorSelectedColor="#5A5A5A"
-                    app:sliderIndicatorUnselectedColor="#FFF"
-                    app:sliderScrollTimeInSec="1"
-                    app:sliderStartAutoCycle="true" />
-            </androidx.cardview.widget.CardView>
+                    android:layout_height="wrap_content">
+
+                    <com.smarteist.autoimageslider.SliderView
+                        android:id="@+id/imageSlider"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        app:sliderAnimationDuration="600"
+                        app:sliderAutoCycleDirection="back_and_forth"
+                        app:sliderAutoCycleEnabled="true"
+                        app:sliderIndicatorAnimationDuration="600"
+                        app:sliderIndicatorGravity="center_horizontal|bottom"
+                        app:sliderIndicatorMargin="15dp"
+                        app:sliderIndicatorOrientation="horizontal"
+                        app:sliderIndicatorPadding="3dp"
+                        app:sliderIndicatorRadius="2dp"
+                        app:sliderIndicatorSelectedColor="#5A5A5A"
+                        app:sliderIndicatorUnselectedColor="#FFF"
+                        app:sliderScrollTimeInSec="1"
+                        app:sliderStartAutoCycle="true" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fabComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_chat_white_40"
+                        android:background="@color/colorAccent"
+                        android:layout_gravity="right|bottom"
+                        android:layout_marginRight="16dp"
+                        app:rippleColor="@color/colorAccent"
+                        android:theme="@style/EditTextOrange"
+                        android:layout_marginBottom="20dp" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
 
             <androidx.cardview.widget.CardView
@@ -55,6 +72,7 @@
                     android:gravity="center">
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleImageProfile"
                         android:layout_width="55dp"
                         android:layout_height="55dp"
                         android:src="@drawable/ic_person_grey_150"
@@ -69,21 +87,24 @@
                         android:gravity="center">
 
                         <TextView
+                            android:id="@id/textViewUserName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Nombre del usuario"
                             android:textColor ="@color/black"/>
 
                         <TextView
+                            android:id="@id/textViewPhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="3130000000"/>
                     </LinearLayout>
 
                     <Button
+                        android:id="@+id/btnShowProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Editar perfil"
+                        android:text="Ver perfil"
                         android:layout_marginLeft="30dp"
                         android:background="@drawable/button_border"
                         android:textColor="@color/colorAccent"
@@ -93,6 +114,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
+                android:id="@+id/textViewTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Titulo del juego"
@@ -120,6 +142,7 @@
                         android:src="@drawable/ic_assignment_grey_50"/>
 
                     <TextView
+                        android:id="@+id/textViewCategory"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Categoria"
@@ -148,6 +171,7 @@
                 android:layout_marginTop="10dp"/>
 
             <TextView
+                android:id="@+id/textViewDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"

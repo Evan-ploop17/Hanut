@@ -5,6 +5,7 @@ import static java.security.AccessController.getContext;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -87,6 +88,7 @@ public class PostDetailActivity extends AppCompatActivity {
     CircleImageView mCircleImageViewProfile;
     Button mButtonShowProfile;
     FloatingActionButton mFabComment;
+    Toolbar mToolbar;
 
     String mIdUser = "";
 
@@ -109,6 +111,12 @@ public class PostDetailActivity extends AppCompatActivity {
         mButtonShowProfile = findViewById(R.id.btnShowProfile);
         mFabComment = findViewById(R.id.fabComment);
         mRecyclerView = findViewById(R.id.recyclerViewComments);
+        mToolbar = findViewById(R.id.toolbar);
+
+        // Este código lo suamos para poder meter el toolbar
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // COn este código generamos in linear layout de xml y hacemos que las tarjetas se muestren una sobre la otra
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PostDetailActivity.this);

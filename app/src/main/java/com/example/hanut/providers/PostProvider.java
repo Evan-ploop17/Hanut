@@ -28,6 +28,16 @@ public class PostProvider {
         return mCollection.orderBy("timestamp", Query.Direction.DESCENDING);
     }
 
+    public Query getPostByCategoryAndTimestamp(String category){
+        return mCollection.whereEqualTo("category", category).orderBy("timestamp", Query.Direction.DESCENDING);
+
+    }
+
+    public Query getPostByTitle(String title){
+        return mCollection.orderBy("title").startAt(title).endAt(title+'\uf8ff');
+
+    }
+
     // Buscar todos los post donde el id del usuario es igual al id que recibe por parametro
     public Query getPostByUser(String id){
         return mCollection.whereEqualTo("idUser", id);

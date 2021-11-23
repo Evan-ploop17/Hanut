@@ -19,6 +19,9 @@
     <string name="transitionname_picture">transitionnamepicture</string>
 
 
+    <!-- Se usa en el android mnifes viene desde firebase Cloud Messaging V65 -->
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
     <string name="mail">Mail</string>
     <string name="password">Contraseña</string>
     <string name="confirm_password">Confirmar contraseña</string>

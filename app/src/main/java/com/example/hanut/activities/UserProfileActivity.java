@@ -1,12 +1,15 @@
 package com.example.hanut.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +38,7 @@ public class UserProfileActivity extends AppCompatActivity {
     TextView mTextViewEmail;
     TextView mTextViewPostNumber;
     TextView mTextViewPostExist;
+    Toolbar mToolbar;
     // PROVIDERS
     UserProvider mUserProvider;
     AuthProvider mAuthProvider;
@@ -42,7 +46,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
     // parametro para recibir el id de la persona que publico el post, no del que esta logueado
     String mExtraIdUser;
-
 
     RecyclerView mRecyclerViewMyPost;
     // Adapter
@@ -61,6 +64,14 @@ public class UserProfileActivity extends AppCompatActivity {
         mTextViewEmail = findViewById(R.id.textViewEmail);
         mTextViewPostNumber = findViewById(R.id.textViewPostNumber);
         mTextViewPostExist = findViewById(R.id.textViewPostExist);
+        mToolbar = findViewById(R.id.toolbar);
+
+        // Este código lo suamos para poder meter el toolbar
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         mImageCover = findViewById(R.id.imageViewCover);
         mImageViewProfile = findViewById(R.id.circleImageProfile);
         // PROVIDERS
@@ -163,5 +174,15 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+
+    // Este método se usa para la flecha que "back que no ha sido implementada"
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+        }
+        return true;
     }
 }

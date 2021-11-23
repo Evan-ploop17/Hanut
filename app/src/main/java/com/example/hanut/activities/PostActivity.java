@@ -181,8 +181,8 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void clickPost() {
-        mTitle = mTextInputTitle.getText().toString();
-        mCategory = mTextInputCategory.getText().toString();
+        mTitle = mTextInputTitle.getText().toString().toUpperCase();
+        mCategory = mTextInputCategory.getText().toString().toUpperCase();
         mDescription = mTextInputDescription.getText().toString();
 
         if(!mTitle.isEmpty() && !mDescription.isEmpty() && !mCategory.isEmpty()){

@@ -37,6 +37,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
     UserProvider mUserProvider;
     LikesProviders mLikesProvider;
     AuthProvider mAuthProvider;
+    TextView mTextViewNumberFilter;
 
     public PostsAdapter(FirestoreRecyclerOptions<Post> options, Context context){
         super(options);
@@ -46,12 +47,25 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
         this.mAuthProvider = new AuthProvider();
     }
 
-
+    public PostsAdapter(FirestoreRecyclerOptions<Post> options, Context context, TextView textView){
+        super(options);
+        this.context = context;
+        this.mUserProvider = new UserProvider();
+        this.mLikesProvider = new LikesProviders();
+        this.mAuthProvider = new AuthProvider();
+        this.mTextViewNumberFilter = textView;
+    }
 
 
     // En este método establecemos el contenido que queremos que se muestre en cada una de lass vistas. V38
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Post post) {
+
+        if(mTextViewNumberFilter != null){
+            int numberFilter = getSnapshots().size();
+            mTextViewNumberFilter.setText(String.valueOf(numberFilter));
+        }
+
         // Almacenamos en documento Todo el documento de la base de datos
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         String postId = document.getId();

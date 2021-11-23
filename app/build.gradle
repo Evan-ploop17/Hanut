@@ -83,5 +83,11 @@ dependencies {
     // Libreria para el slider del el post activity
     implementation 'com.github.smarteist:autoimageslider:1.4.0'
 
+    // Para hacer las busquedas por nombre de post
+    implementation 'com.github.mancj:MaterialSearchBar:0.7.5'
+
+    //Messaging de Firebase 63
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+
     kapt "androidx.room:room-compiler:$room_version"
 }

@@ -1,17 +1,27 @@
 package com.example.hanut.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hanut.R;
+import com.example.hanut.adapters.MyPostsAdapter;
+import com.example.hanut.models.Post;
 import com.example.hanut.providers.AuthProvider;
 import com.example.hanut.providers.PostProvider;
 import com.example.hanut.providers.UserProvider;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
@@ -24,6 +34,7 @@ public class UserProfileActivity extends AppCompatActivity {
     TextView mTextViewPhone;
     TextView mTextViewEmail;
     TextView mTextViewPostNumber;
+    TextView mTextViewPostExist;
     // PROVIDERS
     UserProvider mUserProvider;
     AuthProvider mAuthProvider;
@@ -31,6 +42,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
     // parametro para recibir el id de la persona que publico el post, no del que esta logueado
     String mExtraIdUser;
+
+
+    RecyclerView mRecyclerViewMyPost;
+    // Adapter
+    MyPostsAdapter mAdapter;
 
     ImageView mImageCover;
     CircleImageView mImageViewProfile;
@@ -44,6 +60,7 @@ public class UserProfileActivity extends AppCompatActivity {
         mTextViewPhone = findViewById(R.id.textViewPhone);
         mTextViewEmail = findViewById(R.id.textViewEmail);
         mTextViewPostNumber = findViewById(R.id.textViewPostNumber);
+        mTextViewPostExist = findViewById(R.id.textViewPostExist);
         mImageCover = findViewById(R.id.imageViewCover);
         mImageViewProfile = findViewById(R.id.circleImageProfile);
         // PROVIDERS
@@ -54,8 +71,49 @@ public class UserProfileActivity extends AppCompatActivity {
         // obtenermos el ID del usaurio que posteo la ublicación
         mExtraIdUser = getIntent().getStringExtra("idUser");
 
+        mRecyclerViewMyPost = findViewById(R.id.recyclerViewMyPost);
+        // COn este código generamos in linear layout de xml y hacemos que las tarjetas se muestren una sobre la otra
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(UserProfileActivity.this);
+        mRecyclerViewMyPost.setLayoutManager(linearLayoutManager);
+
         getUser();
         getPostNumber();
+        checkIfExistPost();
+    }
+
+    private void checkIfExistPost() {
+        mPostProvider.getPostByUser(mExtraIdUser).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                int numberPost = value.size();
+                if(numberPost > 0){
+                    mTextViewPostExist.setText("Publicaciones");
+                    mTextViewPostExist.setTextColor(Color.RED);
+                }
+                else{
+                    mTextViewPostExist.setText("No hay publicaciones");
+                    mTextViewPostExist.setTextColor(Color.GRAY);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Query query = mPostProvider.getPostByUser(mExtraIdUser);
+        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
+                .setQuery(query, Post.class)
+                .build();
+        mAdapter = new MyPostsAdapter(options, UserProfileActivity.this);
+        mRecyclerViewMyPost.setAdapter(mAdapter);
+        mAdapter .startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
     }
 
     private void getPostNumber(){

@@ -1,6 +1,7 @@
 package com.example.hanut.fragments;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -29,7 +30,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -48,6 +48,7 @@ public class ProfileFragment extends Fragment {
     TextView mTextViewPhone;
     TextView mTextViewEmail;
     TextView mTextViewPostNumber;
+    TextView mTextViewPostExist;
     ImageView mImageCover;
     CircleImageView mImageViewProfile;
     RecyclerView mRecyclerViewMyPost;
@@ -68,9 +69,10 @@ public class ProfileFragment extends Fragment {
         mTextViewPhone = mView.findViewById(R.id.textViewPhone);
         mTextViewEmail = mView.findViewById(R.id.textViewEmail);
         mTextViewPostNumber = mView.findViewById(R.id.textViewPostNumber);
+        mTextViewPostExist = mView.findViewById(R.id.textViewPostExist);
         mImageCover = mView.findViewById(R.id.imageViewCover);
         mImageViewProfile = mView.findViewById(R.id.circleImageProfile);
-        // ADAPTER
+
         mRecyclerViewMyPost = mView.findViewById(R.id.recyclerViewMyPost);
         // COn este código generamos in linear layout de xml y hacemos que las tarjetas se muestren una sobre la otra
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -94,7 +96,26 @@ public class ProfileFragment extends Fragment {
         getUser();
         // Obtener numero de publicaciones
         getPostNumber();
+        // método para saber si el usaurio tiene alguna poblicación
+        checkIfExistPost();
         return mView;
+    }
+
+    private void checkIfExistPost() {
+        mPostProvider.getPostByUser(mAuthProvider.getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                int numberPost = value.size();
+                if(numberPost > 0){
+                    mTextViewPostExist.setText("Publicaciones");
+                    mTextViewPostExist.setTextColor(Color.RED);
+                }
+                else{
+                    mTextViewPostExist.setText("No hay publicaciones");
+                    mTextViewPostExist.setTextColor(Color.GRAY);
+                }
+            }
+        });
     }
 
     @Override

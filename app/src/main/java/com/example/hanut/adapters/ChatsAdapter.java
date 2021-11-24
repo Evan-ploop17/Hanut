@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hanut.R;
 import com.example.hanut.models.Chat;
+import com.example.hanut.providers.AuthProvider;
 import com.example.hanut.providers.UserProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -24,11 +25,13 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
 
     Context context;
     UserProvider mUsersProvider;
+    AuthProvider mAuthProvider;
 
     public ChatsAdapter(FirestoreRecyclerOptions<Chat> options, Context context) {
         super(options);
         this.context = context;
         mUsersProvider = new UserProvider();
+        mAuthProvider = new AuthProvider();
     }
 
     @Override
@@ -36,8 +39,13 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
 
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String chatId = document.getId();
-        getUserInfo(chatId, holder);
 
+        if(mAuthProvider.getUid().equals(chat.getIdUser1())){
+            getUserInfo(chat.getIdUser2(), holder);
+        }
+        else{
+            getUserInfo(chat.getIdUser1(), holder);
+        }
     }
 
     private void getUserInfo(String idUser, final ViewHolder holder) {
@@ -45,8 +53,8 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    if (documentSnapshot.contains("username")) {
-                        String username = documentSnapshot.getString("username");
+                    if (documentSnapshot.contains("userName")) {
+                        String username = documentSnapshot.getString("userName");
                         holder.textViewUsername.setText(username.toUpperCase());
                     }
                     if (documentSnapshot.contains("image_profile")) {

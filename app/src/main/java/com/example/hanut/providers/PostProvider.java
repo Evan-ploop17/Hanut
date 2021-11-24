@@ -33,6 +33,8 @@ public class PostProvider {
 
     }
 
+
+    // Con este método se hacen busquedas donde el campo coincida con lo metido en el search V62
     public Query getPostByTitle(String title){
         return mCollection.orderBy("title").startAt(title).endAt(title+'\uf8ff');
 

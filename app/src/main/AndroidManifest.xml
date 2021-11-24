@@ -26,9 +26,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".activities.FiltersActivity"
-            android:parentActivityName=".activities.HomeActivity"
+            android:name=".activities.ChatActivity"
             android:exported="true" />
+        <activity
+            android:name=".activities.FiltersActivity"
+            android:exported="true"
+            android:parentActivityName=".activities.HomeActivity" />
         <activity
             android:name=".activities.UserProfileActivity"
             android:exported="true"
@@ -91,7 +94,6 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
-
     </application>
 
 </manifest>

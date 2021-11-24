@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.hanut.R
+import com.example.hanut.fragments.ChatFragment
 import com.example.hanut.fragments.FiltersFragment
 import com.example.hanut.fragments.HomeFragment
 import com.example.hanut.fragments.ProfileFragment
@@ -61,8 +62,8 @@ class HomeActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.itemChat -> {
-                    //openFragment(ChatFragment())
-                    //return@OnNavigationItemSelectedListener true
+                    openFragment(ChatFragment())
+                    return@OnNavigationItemSelectedListener true
                 }
                 R.id.itemProfile -> {
                     openFragment(ProfileFragment())

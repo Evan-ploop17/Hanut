@@ -27,12 +27,16 @@ import com.example.hanut.adapters.CommentAdapter;
 import com.example.hanut.adapters.PostsAdapter;
 import com.example.hanut.adapters.SliderAdapter;
 import com.example.hanut.models.Comment;
+import com.example.hanut.models.FCMBody;
+import com.example.hanut.models.FCMResponse;
 import com.example.hanut.models.Post;
 import com.example.hanut.models.SliderItem;
 import com.example.hanut.providers.AuthProvider;
 import com.example.hanut.providers.CommentsProvider;
 import com.example.hanut.providers.LikesProviders;
+import com.example.hanut.providers.NotificationProvider;
 import com.example.hanut.providers.PostProvider;
+import com.example.hanut.providers.TokenProvider;
 import com.example.hanut.providers.UserProvider;
 import com.example.hanut.utils.RelativeTime;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -53,10 +57,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PostDetailActivity extends AppCompatActivity {
 
@@ -74,6 +83,8 @@ public class PostDetailActivity extends AppCompatActivity {
     CommentsProvider mCommentsProvider;
     AuthProvider mAuthProvider;
     LikesProviders mLikesProvider;
+    NotificationProvider mNotificationProvider ;
+    TokenProvider mTokenProvider;
 
     String mExtraPostId;
 
@@ -112,6 +123,7 @@ public class PostDetailActivity extends AppCompatActivity {
         mFabComment = findViewById(R.id.fabComment);
         mRecyclerView = findViewById(R.id.recyclerViewComments);
         mToolbar = findViewById(R.id.toolbar);
+        
 
         // Este código lo suamos para poder meter el toolbar
         setSupportActionBar(mToolbar);
@@ -128,6 +140,8 @@ public class PostDetailActivity extends AppCompatActivity {
         mCommentsProvider = new CommentsProvider();
         mAuthProvider = new AuthProvider();
         mLikesProvider = new LikesProviders();
+        mNotificationProvider =  new NotificationProvider();
+        mTokenProvider = new TokenProvider();
 
         mExtraPostId = getIntent().getStringExtra("id");
         mFabComment.setOnClickListener(new View.OnClickListener() {
@@ -241,9 +255,54 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
+                    createNotification(value);
                     Toast.makeText(PostDetailActivity.this, "El almaceno el comentario", Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(PostDetailActivity.this, "NO se almaceno el comentario", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void createNotification(String comment){
+        if(mIdUser == null){
+            return;
+        }
+        mTokenProvider.getToken(mIdUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+                    if(documentSnapshot.contains("token")){
+                        String token = documentSnapshot.getString("token");
+                        Map<String, String> data = new HashMap<>();
+                        data.put("title", "Nuevo comentario");
+                        data.put("body", comment);
+                        FCMBody body = new FCMBody(token, "high", "4500s", data);
+                        mNotificationProvider.sendNotification(body).enqueue(new Callback<FCMResponse>() {
+                            @Override
+                            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                                 if(response.body() != null){
+                                     if(response.body().getSuccess() == 1){
+                                         Toast.makeText(PostDetailActivity.this, "La notificacion se envio correctamente", Toast.LENGTH_SHORT).show();
+                                     }
+                                     else{
+                                         Toast.makeText(PostDetailActivity.this, "La notificacion NOO se envio correctamente", Toast.LENGTH_SHORT).show();
+                                     }
+                                 }
+                                 else{
+                                     Toast.makeText(PostDetailActivity.this, "La notificacion NOO se envio correctamente", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<FCMResponse> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                }
+                else{
+                    Toast.makeText(PostDetailActivity.this, "El token de notiicaiones del usuario no existe", Toast.LENGTH_SHORT).show();
                 }
             }
         });

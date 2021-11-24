@@ -7,9 +7,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import com.example.hanut.providers.PostProvider;
 import com.example.hanut.providers.UserProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -39,6 +42,8 @@ public class UserProfileActivity extends AppCompatActivity {
     TextView mTextViewPostNumber;
     TextView mTextViewPostExist;
     Toolbar mToolbar;
+    FloatingActionButton mFabChat;
+
     // PROVIDERS
     UserProvider mUserProvider;
     AuthProvider mAuthProvider;
@@ -65,6 +70,15 @@ public class UserProfileActivity extends AppCompatActivity {
         mTextViewPostNumber = findViewById(R.id.textViewPostNumber);
         mTextViewPostExist = findViewById(R.id.textViewPostExist);
         mToolbar = findViewById(R.id.toolbar);
+        mFabChat = findViewById(R.id.fabChat);
+
+
+        mFabChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToChatActivity();
+            }
+        });
 
         // Este código lo suamos para poder meter el toolbar
         setSupportActionBar(mToolbar);
@@ -87,9 +101,30 @@ public class UserProfileActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(UserProfileActivity.this);
         mRecyclerViewMyPost.setLayoutManager(linearLayoutManager);
 
+
+        if(mAuthProvider.getUid().equals(mExtraIdUser)){
+            // Cualquiera de los dos métodos
+            mFabChat.setVisibility(View.GONE);
+            // mFabChat.setEnabled(false);
+        }
+
         getUser();
         getPostNumber();
         checkIfExistPost();
+    }
+
+
+
+
+
+
+
+    private void goToChatActivity() {
+        Intent intent = new Intent(UserProfileActivity.this, ChatActivity.class);
+        intent.putExtra("idUser1", mAuthProvider.getUid());
+        intent.putExtra("idUser2", mExtraIdUser );
+        startActivity(intent);
+
     }
 
     private void checkIfExistPost() {

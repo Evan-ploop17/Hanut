@@ -235,9 +235,9 @@ public class PostActivity extends AppCompatActivity {
                                                 // Los objetos mXXX se hicieron globales para no tener que estarlos pasando como parametro a la funcion
                                                 post.setImage1(url);
                                                 post.setImage2(url2);
-                                                post.setTitle(mTitle);
+                                                post.setTitle(mTitle.toUpperCase());
                                                 post.setDescription(mDescription);
-                                                post.setCategory(mCategory);
+                                                post.setCategory(mCategory.toUpperCase());
                                                 post.setIdUser(mAuthProvider.getUid());
                                                 post.setTimestamp(new Date().getTime());
                                                 // addOnCompleteListener se usa para saer si se termino de ejecutar la tarea

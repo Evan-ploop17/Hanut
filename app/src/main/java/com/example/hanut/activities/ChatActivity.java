@@ -1,19 +1,27 @@
 package com.example.hanut.activities;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.hanut.R;
 import com.example.hanut.models.Chat;
+import com.example.hanut.models.Message;
+import com.example.hanut.providers.AuthProvider;
 import com.example.hanut.providers.ChatsProvider;
+import com.example.hanut.providers.MessageProvider;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -24,8 +32,14 @@ public class ChatActivity extends AppCompatActivity {
 
     String mExtraIdUSer1;
     String mExtraIdUSer2;
+    String mExtraIdChat;
 
     ChatsProvider mChatsProvider;
+    MessageProvider mMessagesProvider;
+    AuthProvider mAuthProvider;
+
+    EditText mEditTextMessage;
+    ImageView mImageViewSendMessage;
 
     View mActionBarView;
 
@@ -38,11 +52,55 @@ public class ChatActivity extends AppCompatActivity {
 
         mExtraIdUSer1 = getIntent().getStringExtra("idUser1");
         mExtraIdUSer2 = getIntent().getStringExtra("idUser2");
+        mExtraIdChat = getIntent().getStringExtra("idChat");
+
+        mEditTextMessage = findViewById(R.id.editTextMessage);
+        mImageViewSendMessage = findViewById(R.id.imageViewSendMessage);
+
+        mImageViewSendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMessage();
+            }
+        });
 
         mChatsProvider = new ChatsProvider();
+        mMessagesProvider = new MessageProvider();
+        mAuthProvider = new AuthProvider();
 
         checkIfChatExist();
 
+    }
+
+    private void sendMessage() {
+        String textMessage = mEditTextMessage.getText().toString();
+        if(!textMessage.isEmpty()){
+            Message message= new Message();
+            if(mAuthProvider.getUid().equals(mExtraIdUSer1)){
+                message.setIdSender(mExtraIdUSer1);
+                message.setIdReceiver(mExtraIdUSer2);
+            } else{
+                message.setIdSender(mExtraIdUSer2);
+                message.setIdReceiver(mExtraIdUSer1);
+            }
+            message.setViewed(false);
+            message.setTimestamp(new Date().getTime());
+            message.setMessage(textMessage);
+            message.setIdChat(mExtraIdChat);
+
+            mMessagesProvider.create(message).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        mEditTextMessage.setText("");
+                        Toast.makeText(ChatActivity.this, "SI", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(ChatActivity.this, "NO", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
     private void showCustomToolbar(int resource) {

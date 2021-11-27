@@ -1,6 +1,7 @@
 package com.example.hanut.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hanut.R;
+import com.example.hanut.activities.ChatActivity;
 import com.example.hanut.models.Chat;
 import com.example.hanut.providers.AuthProvider;
 import com.example.hanut.providers.UserProvider;
@@ -46,6 +48,21 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
         else{
             getUserInfo(chat.getIdUser1(), holder);
         }
+
+        holder.viewHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToChatActivity(chatId, chat.getIdUser1(), chat.getIdUser2());
+            }
+        });
+    }
+
+    private void goToChatActivity(String chatId, String idUser1, String idUser2) {
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra("idChat", chatId);
+        intent.putExtra("idUser1", idUser1);
+        intent.putExtra("idUser2", idUser2);
+        context.startActivity(intent);
     }
 
     private void getUserInfo(String idUser, final ViewHolder holder) {

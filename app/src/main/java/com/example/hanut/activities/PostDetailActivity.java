@@ -1,14 +1,5 @@
 package com.example.hanut.activities;
 
-import static java.security.AccessController.getContext;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,14 +13,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.hanut.R;
 import com.example.hanut.adapters.CommentAdapter;
-import com.example.hanut.adapters.PostsAdapter;
 import com.example.hanut.adapters.SliderAdapter;
 import com.example.hanut.models.Comment;
-import com.example.hanut.models.FCMBody;
-import com.example.hanut.models.FCMResponse;
-import com.example.hanut.models.Post;
 import com.example.hanut.models.SliderItem;
 import com.example.hanut.providers.AuthProvider;
 import com.example.hanut.providers.CommentsProvider;
@@ -50,22 +44,15 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
-import com.smarteist.autoimageslider.IndicatorView.draw.data.Indicator;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class PostDetailActivity extends AppCompatActivity {
 
@@ -98,6 +85,7 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView mTextViewLikes;
     CircleImageView mCircleImageViewProfile;
     Button mButtonShowProfile;
+    Button mBtnComprar;
     FloatingActionButton mFabComment;
     Toolbar mToolbar;
 
@@ -120,6 +108,7 @@ public class PostDetailActivity extends AppCompatActivity {
         mTextViewLikes = findViewById(R.id.textViewLikes);
         mCircleImageViewProfile = findViewById(R.id.circleImageProfile);
         mButtonShowProfile = findViewById(R.id.btnShowProfile);
+        mBtnComprar = findViewById(R.id.btnComprar);
         mFabComment = findViewById(R.id.fabComment);
         mRecyclerView = findViewById(R.id.recyclerViewComments);
         mToolbar = findViewById(R.id.toolbar);
@@ -153,13 +142,30 @@ public class PostDetailActivity extends AppCompatActivity {
         mButtonShowProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 goToShowProfile();
                 
+            }
+        });
+        mBtnComprar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToBuy();
             }
         });
 
         getPost();
         getNumberLikes();
+    }
+
+    private void goToBuy() {
+        if(!mIdUser.equals("")){
+            Intent intent = new Intent(PostDetailActivity.this, PayActivity.class);
+            intent.putExtra("idUser", mIdUser);
+            startActivity(intent);
+        }else{
+            Toast.makeText(PostDetailActivity.this, "El Id del usuario aún no se carga", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void getNumberLikes() {
@@ -198,19 +204,18 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private void showDialogComment() {
         AlertDialog.Builder alert = new AlertDialog.Builder(PostDetailActivity.this);
-        alert.setTitle("COMENTARIO");
-        alert.setMessage("Escribe un comentario");
+        alert.setTitle("¡COMENTARIO!");
+        alert.setMessage("Ingresa tu comentario");
 
-        EditText editText = new EditText(PostDetailActivity.this);
+        final EditText editText = new EditText(PostDetailActivity.this);
         editText.setHint("Texto");
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        params.setMargins(32, 0, 32, 32);
+        params.setMargins(36, 0, 36, 36);
         editText.setLayoutParams(params);
-
         RelativeLayout container = new RelativeLayout(PostDetailActivity.this);
         RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -221,16 +226,17 @@ public class PostDetailActivity extends AppCompatActivity {
 
         alert.setView(container);
 
+
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String value = editText.getText().toString();
-                if(!value.isEmpty()){
+                if (!value.isEmpty()) {
                     createComment(value);
-                }else{
-                    Toast.makeText(PostDetailActivity.this, "Escribe un comentario", Toast.LENGTH_LONG ).show();
                 }
-
+                else {
+                    Toast.makeText(PostDetailActivity.this, "Debe ingresar el comentario", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -244,53 +250,53 @@ public class PostDetailActivity extends AppCompatActivity {
         alert.show();
     }
 
-    private void createComment(String value) {
+    private void createComment(final String value) {
         Comment comment = new Comment();
         comment.setComment(value);
         comment.setIdPost(mExtraPostId);
         comment.setIdUser(mAuthProvider.getUid());
         comment.setTimestamp(new Date().getTime());
-
         mCommentsProvider.create(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    createNotification(value);
-                    Toast.makeText(PostDetailActivity.this, "El almaceno el comentario", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(PostDetailActivity.this, "NO se almaceno el comentario", Toast.LENGTH_LONG).show();
+                if (task.isSuccessful()) {
+                    //sendNotification(value);
+                    Toast.makeText(PostDetailActivity.this, "El comentario se creo correctamente", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(PostDetailActivity.this, "No se pudo crear el comentario", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void createNotification(String comment){
-        if(mIdUser == null){
+/*    private void sendNotification(final String comment) {
+        if (mIdUser == null) {
             return;
         }
         mTokenProvider.getToken(mIdUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    if(documentSnapshot.contains("token")){
+                if (documentSnapshot.exists()) {
+                    if (documentSnapshot.contains("token")) {
                         String token = documentSnapshot.getString("token");
                         Map<String, String> data = new HashMap<>();
-                        data.put("title", "Nuevo comentario");
+                        data.put("title", "NUEVO COMENTARIO");
                         data.put("body", comment);
                         FCMBody body = new FCMBody(token, "high", "4500s", data);
                         mNotificationProvider.sendNotification(body).enqueue(new Callback<FCMResponse>() {
                             @Override
                             public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-                                 if(response.body() != null){
-                                     if(response.body().getSuccess() == 1){
-                                         Toast.makeText(PostDetailActivity.this, "La notificacion se envio correctamente", Toast.LENGTH_SHORT).show();
-                                     }
-                                     else{
-                                         Toast.makeText(PostDetailActivity.this, "La notificacion NOO se envio correctamente", Toast.LENGTH_SHORT).show();
-                                     }
-                                 }
-                                 else{
-                                     Toast.makeText(PostDetailActivity.this, "La notificacion NOO se envio correctamente", Toast.LENGTH_SHORT).show();
+                                if (response.body() != null) {
+                                    if (response.body().getSuccess() == 1) {
+                                        Toast.makeText(PostDetailActivity.this, "La notificacion se envio correcatemente", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else {
+                                        Toast.makeText(PostDetailActivity.this, "La notificacion no se pudo enviar", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                else {
+                                    Toast.makeText(PostDetailActivity.this, "La notificacion no se pudo enviar", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -301,16 +307,18 @@ public class PostDetailActivity extends AppCompatActivity {
                         });
                     }
                 }
-                else{
-                    Toast.makeText(PostDetailActivity.this, "El token de notiicaiones del usuario no existe", Toast.LENGTH_SHORT).show();
+                else {
+                    Toast.makeText(PostDetailActivity.this, "El token de notificaciones del usuario no existe", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
+ */
+
     private void goToShowProfile() {
         if(!mIdUser.equals("")){
-            Intent intent = new Intent(PostDetailActivity.this, UserProfileActivity.class);
+            Intent intent = new Intent(PostDetailActivity.this, PostDetailActivity.class);
             intent.putExtra("idUser", mIdUser);
             startActivity(intent);
         }else{

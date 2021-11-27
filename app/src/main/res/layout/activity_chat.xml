@@ -31,6 +31,7 @@
         android:layout_margin="16dp">
 
         <EditText
+            android:id="@+id/editTextMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Escribir mensaje acá"
@@ -39,11 +40,11 @@
             android:background="@drawable/custom_edittext_chat"
             android:padding="10dp" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
+            android:id="@+id/imageViewSendMessage"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@mipmap/ic_send_padding"
-            app:civ_circle_background_color="@color/colorPrimary"
             android:layout_marginLeft="10dp"/>
 
     </LinearLayout>

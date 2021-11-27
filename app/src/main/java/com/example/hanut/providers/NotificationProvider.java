@@ -11,11 +11,11 @@ public class NotificationProvider {
 
     private String url = "https://fcm.googleapis.com";
 
+    public NotificationProvider() {
 
-    public NotificationProvider(){}
-
-    public Call<FCMResponse> sendNotification(FCMBody body){
-        return RetrofitClient.getClient(url).create(IFCMApi.class).send(body);
     }
 
+    public Call<FCMResponse> sendNotification(FCMBody body) {
+        return RetrofitClient.getClient(url).create(IFCMApi.class).send(body);
+    }
 }

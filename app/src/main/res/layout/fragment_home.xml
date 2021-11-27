@@ -12,7 +12,7 @@
         android:id="@+id/searchBar"
         style="@style/MaterialSearchBarLight"
         app:mt_hint="Texto de busqueda"
-        app:mt_placeholder="Buscar"
+        app:mt_placeholder="Buscar por nombre"
         app:mt_maxSuggestionsCount="10"
         app:mt_placeholderColor="@color/white"
         app:mt_searchBarColor="@color/colorPrimary"

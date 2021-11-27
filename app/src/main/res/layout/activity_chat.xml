@@ -34,7 +34,7 @@
             android:id="@+id/editTextMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Escribir mensaje acá"
+            android:hint="Escribir mensaje acá"
             android:inputType="textMultiLine"
             android:layout_weight="1"
             android:background="@drawable/custom_edittext_chat"

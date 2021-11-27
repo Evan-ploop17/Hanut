@@ -13,8 +13,8 @@ class ActionBarHanut {
             when (menuItem.itemId) {
                 R.id.search -> {
                     // Handle search icon press
-                    val intent = Intent(context, SearchActivity::class.java)
-                    context.startActivity(intent)
+                    //val intent = Intent(context, SearchActivity::class.java)
+                    //context.startActivity(intent)
                     //startActivity(intent)
                     true
                 }

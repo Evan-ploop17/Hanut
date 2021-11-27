@@ -22,7 +22,7 @@ public class MessageProvider {
     }
 
     public Query getMessageByChat(String idChat){
-        return mCollection.whereEqualTo("idChat", idChat).orderBy("timestamp", Query.Direction.DESCENDING);
+        return mCollection.whereEqualTo("idChat", idChat).orderBy("timestamp", Query.Direction.ASCENDING);
     }
 
 }

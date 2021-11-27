@@ -15,6 +15,7 @@
         <entry key="app/src/main/res/drawable/ic_person_gray_24.xml" value="0.26974358974358975" />
         <entry key="app/src/main/res/drawable/ic_videogame_grey_50.xml" value="0.16018518518518518" />
         <entry key="app/src/main/res/drawable/rounded_linear_layout.xml" value="0.27395833333333336" />
+        <entry key="app/src/main/res/drawable/rounded_linear_layout_gray.xml" value="0.27395833333333336" />
         <entry key="app/src/main/res/layout/action_bar_toolbar.xml" value="0.17119565217391305" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.24375" />
         <entry key="app/src/main/res/layout/activity_complete_profile.xml" value="0.33" />
@@ -35,7 +36,7 @@
         <entry key="app/src/main/res/layout/auth_activity.xml" value="0.33" />
         <entry key="app/src/main/res/layout/cardview_chats.xml" value="0.2578125" />
         <entry key="app/src/main/res/layout/cardview_comment.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/cardview_message.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/cardview_message.xml" value="0.25" />
         <entry key="app/src/main/res/layout/cardview_my_post.xml" value="0.2578125" />
         <entry key="app/src/main/res/layout/cardview_post.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_chat_toolbar.xml" value="0.2578125" />

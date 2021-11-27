@@ -159,13 +159,8 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     private void goToBuy() {
-        if(!mIdUser.equals("")){
-            Intent intent = new Intent(PostDetailActivity.this, PayActivity.class);
-            intent.putExtra("idUser", mIdUser);
-            startActivity(intent);
-        }else{
-            Toast.makeText(PostDetailActivity.this, "El Id del usuario aún no se carga", Toast.LENGTH_LONG).show();
-        }
+        Intent intent = new Intent(PostDetailActivity.this, PayActivity.class);
+        startActivity(intent);
     }
 
     private void getNumberLikes() {
@@ -318,7 +313,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private void goToShowProfile() {
         if(!mIdUser.equals("")){
-            Intent intent = new Intent(PostDetailActivity.this, PostDetailActivity.class);
+            Intent intent = new Intent(PostDetailActivity.this, UserProfileActivity.class);
             intent.putExtra("idUser", mIdUser);
             startActivity(intent);
         }else{
@@ -327,7 +322,7 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     private void instanceSlider(){
-        // todo esto viene de la libreria : https://github.com/smarteist/Android-Image-Slider
+        // T o d o esto viene de la libreria : https://github.com/smarteist/Android-Image-Slider
         mSliderAdapter = new SliderAdapter(PostDetailActivity.this, mSliderItems);
         mSliderView.setSliderAdapter(mSliderAdapter);
         // Con esto se define el tipo de transicion que va a tener las imagenes 45 22.20

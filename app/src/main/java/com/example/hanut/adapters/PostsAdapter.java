@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,6 +68,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
         // Almacenamos en documento Todo el documento de la base de datos
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         String postId = document.getId();
+
         holder.textViewTitle.setText(post.getTitle().toUpperCase());
         holder.textViewDescription.setText(post.getDescription());
         if(post.getImage1() != null){
